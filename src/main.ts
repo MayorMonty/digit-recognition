@@ -1,8 +1,24 @@
-import { sayHello } from "./greet";
+import DrawableCanvas from "./canvas";
+import { BlobDetection } from "./analysis/blob";
 
-function showHello(divName: string, name: string) {
-  const elt = document.getElementById(divName);
-  elt.innerText =  sayHello(name);
-}
+/**
+ * UI GLUE
+ */
 
-showHello("greeting", "TypeScript-Live-Reload-Boilerplate");
+const canvas = document.querySelector("canvas#input") as HTMLCanvasElement;
+const drawable = new DrawableCanvas(canvas, { width: 400, height: 400 });
+
+// Assign buttons
+document
+  .getElementById("button-clear")
+  .addEventListener("click", () => drawable.clear());
+
+document.getElementById("button-analyze").addEventListener("click", () => {
+  // ImageData
+  const imagedata = drawable.export();
+  const blobs = BlobDetection.find(imagedata);
+
+  for (let blob of blobs) {
+    blob.draw(drawable.context);
+  }
+});
