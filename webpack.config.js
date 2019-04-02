@@ -1,38 +1,42 @@
-const webpack = require('webpack')
-const failPlugin = require('webpack-fail-plugin')
-const tslint = require('tslint-loader')
+const webpack = require("webpack");
+const failPlugin = require("webpack-fail-plugin");
+const tslint = require("tslint-loader");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const isProd = process.env.NODE_ENV === 'production'
-var prodPlugins = []
+const isProd = process.env.NODE_ENV === "production";
+var prodPlugins = [];
 
 //plugins that are only used for prod builds
 if (isProd) {
-  console.log("Building prod version...")
-  prodPlugins = [
-    new webpack.optimize.UglifyJsPlugin()
-  ]
+  console.log("Building prod version...");
+  prodPlugins = [new webpack.optimize.UglifyJsPlugin()];
 }
 
 module.exports = {
-  entry: './src/main.ts',
+  entry: "./src/main.ts",
   output: {
-    filename: './dist/main.js'
+    filename: "./dist/main.js"
   },
   // Turn on sourcemaps
-  devtool: 'source-map',
+  devtool: "source-map",
   resolve: {
-    extensions: ['', '.webpack.js', '.web.js', '.ts', '.js']
+    extensions: ["", ".webpack.js", ".web.js", ".ts", ".js"]
   },
-  plugins: [
-    failPlugin
-  ].concat(prodPlugins),
+  plugins: [failPlugin].concat(prodPlugins),
   module: {
     loaders: [
-      { test: /\.ts$/, loader: 'ts-loader' },
+      { test: /\.ts$/, loader: "ts-loader" },
+      {
+        test: /\.worker\.js$/,
+        loader: "workerize-loader"
+      },
       // { test: /\.css$/, loader: "style!css" }, // CSS
       { test: /\.less$/, loader: "style!css!less" }, //LESS https://github.com/webpack/less-loader
-      { test: /\.(eot|svg|ttf|woff|woff2)$/, loader: 'file?name=dist/fonts/[name].[ext]'}, // Fonts
-      { test: /\.(jpg|png|svg)$/, loader: 'file?name=dist/images/[name].[ext]'} // Images
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: "file?name=dist/fonts/[name].[ext]"
+      }, // Fonts
+      { test: /\.(jpg|png|svg)$/, loader: "file?name=dist/images/[name].[ext]" } // Images
     ],
     preLoaders: [
       {
@@ -45,4 +49,4 @@ module.exports = {
     emitErrors: true,
     failOnHint: true
   }
-}
+};

@@ -100,7 +100,7 @@ export namespace BlobDetection {
           // This pixel is of interest! Now we need to organize them into groups
           let found = false;
 
-          let minDistance = 75 ** 2;
+          let minDistance = 100 ** 2;
           let selected: Blob;
 
           // Search through blobs, add this pixel to the nearest one if its close enought

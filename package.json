@@ -22,6 +22,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "html-webpack-plugin": "^4.0.0-beta.5",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "source-map-loader": "^0.1.5",
@@ -31,6 +32,10 @@
     "typescript": "^2.1.1",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2",
-    "webpack-fail-plugin": "^1.0.5"
+    "webpack-fail-plugin": "^1.0.5",
+    "workerize-loader": "^1.0.4"
+  },
+  "dependencies": {
+    "workerize": "^0.1.7"
   }
 }
