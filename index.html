@@ -3,12 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <title>Digit Recognition</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Source Sans Pro"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0 auto;
+        font-family: "Source Sans Pro", sans-serif;
+      }
+
+      main {
+        display: flex;
+      }
+
+      canvas {
+        width: 400px;
+        height: 400px;
+        border: 2px solid #2d3436;
+        margin: 16px;
+      }
+
+      .buttons {
+        margin-left: 16px;
+        display: flex;
+      }
+
+      .buttons button {
+        background: none;
+        outline: none;
+        border: 2px solid #2d3436;
+        padding: 8px 16px;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: auto;
+        margin-right: 16px;
+        cursor: pointer;
+      }
+
+      .buttons button:hover {
+        background-color: #2d3436;
+        color: white;
+      }
+
+      .buttons button.right {
+        margin-left: auto;
+      }
+
+      h1 {
+        text-align: center;
+      }
+    </style>
   </head>
 
   <body>
     <h1>Digit Recognition</h1>
     <main>
-      <canvas id="input"></canvas>
+      <aside>
+        <canvas id="input"></canvas>
+        <div class="buttons">
+          <button id="button-clear">Clear</button>
+          <button id="button-analyze" class="right">Analyze</button>
+        </div>
+      </aside>
       <article>
         <p>
           Draw digits in the area to the left (no cursive). It works best when
