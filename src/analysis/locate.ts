@@ -1,4 +1,4 @@
-import { getPixelSum } from "../lib/pixeldata";
+import { getPixelSum } from "../lib/imagedata";
 
 /**
  * Detects the character bounds for centering/resizing
