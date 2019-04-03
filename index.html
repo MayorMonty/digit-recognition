@@ -24,6 +24,11 @@
         margin: 16px;
       }
 
+      canvas#focus {
+        height: 200px;
+        width: 200px;
+      }
+
       .buttons {
         margin-left: 16px;
         display: flex;
@@ -53,6 +58,7 @@
       h1 {
         text-align: center;
       }
+
     </style>
   </head>
 
@@ -68,10 +74,18 @@
       </aside>
       <article>
         <p>
-          Draw digits in the area to the left (no cursive). It works best when
-          digits are distinct and seperated by a little space. When you've
-          entered them, press the button below
+          Draw a single digit in the canvas on the right (touch support coming
+          soon). When ready, press the analyze button below to see the number
+          extracted
         </p>
+        <div class="views">
+          <div class="extract">
+			<canvas id="focus"></canvas>
+			<p>
+				Extracted Image
+			</p>
+		  </div>
+        </figure>
       </article>
     </main>
     <script src="dist/main.js"></script>
