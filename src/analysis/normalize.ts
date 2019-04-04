@@ -29,6 +29,7 @@ export default function normalize({
   data: CanvasRenderingContext2D;
   box: BoundingBox;
 }): number[][] {
+  // Why is this so awful? Because .fill() and TypeScript downlevel iteration is messed up
   let output = [...new Array(20).fill(0)].map(() =>
     [...new Array(20).fill(0)].map(() => 0)
   );
@@ -40,6 +41,10 @@ export default function normalize({
     width: Math.floor(boxData.width / newSize.width),
     height: Math.floor(boxData.height / newSize.height)
   };
+
+  // Center the array based on the new dimensions
+  let y_center = Math.floor((20 - newSize.height) / 2);
+  let x_center = Math.floor((20 - newSize.width) / 2);
 
   // Make boxes
   for (let x = 0; x < newSize.width; x++) {
@@ -68,15 +73,13 @@ export default function normalize({
       data.fillStyle = "rgba(0, 0, 255, 0.5)";
 
       if (hasImportantPixel) {
-        console.log(x, y, "hasImportantPixel");
         data.fillRect(
           box.min.x + x * block.width,
           box.min.y + y * block.height,
           block.width,
           block.height
         );
-        console.log(x, y, output[x]);
-        output[x][y] = 1;
+        output[x + x_center][y + y_center] = 1;
       }
     }
   }
