@@ -1,6 +1,6 @@
 import DrawableCanvas from "./canvas";
-import locate from "./analysis/locate";
-import normalize, { getBoxData } from "./analysis/normalize";
+import locate from "./prepare/locate";
+import normalize, { getBoxData } from "./prepare/normalize";
 
 /**
  * UI GLUE
@@ -51,6 +51,4 @@ document.getElementById("button-analyze").addEventListener("click", () => {
       focus.fillRect(x * 3, y * 3, 3, 3);
     }
   }
-
-  console.log(mnist);
 });
