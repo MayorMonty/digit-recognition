@@ -1,5 +1,6 @@
 import { BoundingBox } from "./locate";
 import resize, { newDimensions } from "./resize";
+import { getPixelData, augmentImageData, getPixelSum } from "../lib/imagedata";
 
 export function getBoxData({
   data,
@@ -28,30 +29,57 @@ export default function normalize({
   data: CanvasRenderingContext2D;
   box: BoundingBox;
 }): number[][] {
-  const focus = (document.querySelector(
-    "canvas#focus"
-  ) as HTMLCanvasElement).getContext("2d");
-
-  const boxData = getBoxData({ box, data });
-  const newSize = newDimensions(boxData, 20);
-
-  console.log(
-    `Scale image from ${boxData.width}x${boxData.height} to ${newSize.width}x${
-      newSize.height
-    } (${newSize.scale * 100}%)`
+  let output = [...new Array(20).fill(0)].map(() =>
+    [...new Array(20).fill(0)].map(() => 0)
   );
 
-  const rescaled = resize(boxData, newSize);
+  let boxData = getBoxData({ box, data });
+  const newSize = newDimensions(boxData, 20);
 
-  // Update canvas size to rescaled size
-  focus.canvas.height = newSize.height;
-  focus.canvas.width = newSize.width;
+  let block = {
+    width: Math.floor(boxData.width / newSize.width),
+    height: Math.floor(boxData.height / newSize.height)
+  };
 
-  // Zoom in a little
-  focus.canvas.style.width = (newSize.width * 10).toString();
-  focus.canvas.style.height = (newSize.height * 10).toString();
+  // Make boxes
+  for (let x = 0; x < newSize.width; x++) {
+    for (let y = 0; y < newSize.height; y++) {
+      let hasImportantPixel = false;
 
-  focus.putImageData(rescaled, 0, 0);
+      // If the block this region represents has an important pixel, we'll want to fill it in
+      for (
+        let sx = Math.floor(x * block.width);
+        sx < (x + 1) * block.width;
+        sx++
+      ) {
+        for (
+          let sy = Math.floor(y * block.height);
+          sy < (y + 1) * block.height;
+          sy++
+        ) {
+          let sum = getPixelSum(boxData, sx, sy);
+          if (sum > 0) {
+            hasImportantPixel = true;
+          }
+        }
+      }
 
-  return [];
+      data.strokeStyle = "blue";
+      data.fillStyle = "rgba(0, 0, 255, 0.5)";
+
+      if (hasImportantPixel) {
+        console.log(x, y, "hasImportantPixel");
+        data.fillRect(
+          box.min.x + x * block.width,
+          box.min.y + y * block.height,
+          block.width,
+          block.height
+        );
+        console.log(x, y, output[x]);
+        output[x][y] = 1;
+      }
+    }
+  }
+
+  return output;
 }
