@@ -9,6 +9,10 @@ import normalize, { getBoxData } from "./analysis/normalize";
 const canvas = document.querySelector("canvas#input") as HTMLCanvasElement;
 const drawable = new DrawableCanvas(canvas, { width: 400, height: 400 });
 
+const focus = (document.querySelector(
+  "canvas#focus"
+) as HTMLCanvasElement).getContext("2d");
+
 // Assign buttons
 document
   .getElementById("button-clear")
@@ -32,5 +36,21 @@ document.getElementById("button-analyze").addEventListener("click", () => {
     box.max.y - box.min.y + 4
   );
 
-  const boxdata = normalize({ box, data: drawable.context });
+  // Get input as a 20x20 array of booleans (for passing into NN)
+  const mnist = normalize({ box, data: drawable.context });
+
+  focus.fillStyle = "white";
+  focus.fillRect(0, 0, focus.canvas.width, focus.canvas.height);
+
+  focus.fillStyle = "black";
+
+  for (let x = 0; x < mnist.length; x++) {
+    for (let y = 0; y < mnist[x].length; y++) {
+      if (mnist[x][y] === 0) continue;
+
+      focus.fillRect(x * 3, y * 3, 3, 3);
+    }
+  }
+
+  console.log(mnist);
 });
