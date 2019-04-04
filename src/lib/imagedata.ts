@@ -5,7 +5,7 @@
 // Gets the sum of the red, green, blue and alpha pixel values for a specific pixel
 export function getPixelSum(image: ImageData, x: number, y: number) {
   let start = y * (image.width * 4) + x * 4;
-  return image.data.slice(start, start + 3).reduce((a, b) => a + b);
+  return image.data.slice(start, start + 3).reduce((a, b) => a + b, 0);
 }
 
 export function getPixelData(image: ImageData, x: number, y: number) {
