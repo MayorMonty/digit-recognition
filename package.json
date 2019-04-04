@@ -1,6 +1,6 @@
 {
-  "name": "ts-webpack-boilerplate",
-  "version": "1.0.0",
+  "name": "digit-recognition",
+  "version": "0.0.0",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,13 +12,13 @@
   },
   "main": "./dist/main.js",
   "author": {
-    "name": "Michael Mrowetz",
-    "email": "me@michaelmrowetz.com",
-    "url": "https://github.com/micmro"
+    "name": "Brendan McGuire",
+    "email": "brendan@bren.app",
+    "url": "https://github.com/MayorMonty"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/micmro/ts-webpack-boilerplate.git"
+    "url": "https://github.com/MayorMonty/digit-recognition"
   },
   "license": "MIT",
   "devDependencies": {
