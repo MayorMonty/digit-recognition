@@ -1,6 +1,7 @@
 import { BoundingBox } from "./locate";
 import resize, { newDimensions } from "./resize";
 import { getPixelData, augmentImageData, getPixelSum } from "../lib/imagedata";
+import { sigmoid } from "../lib/smooth";
 
 export function getBoxData({
   data,
@@ -49,7 +50,7 @@ export default function normalize({
   // Make boxes
   for (let x = 0; x < newSize.width; x++) {
     for (let y = 0; y < newSize.height; y++) {
-      let hasImportantPixel = false;
+      let importantCount = 0;
 
       // If the block this region represents has an important pixel, we'll want to fill it in
       for (
@@ -64,22 +65,30 @@ export default function normalize({
         ) {
           let sum = getPixelSum(boxData, sx, sy);
           if (sum > 0) {
-            hasImportantPixel = true;
+            importantCount++;
           }
         }
       }
 
       data.strokeStyle = "blue";
-      data.fillStyle = "rgba(0, 0, 255, 0.5)";
 
-      if (hasImportantPixel) {
+      if (importantCount > 0.05 * block.width * block.height) {
+        let antialias = sigmoid(
+          importantCount / (block.width * block.height),
+          10,
+          0.1
+        );
+
+        output[x + x_center][y + y_center] = antialias;
+
+        data.fillStyle = `rgba(0, 0, 255, ${antialias})`;
+
         data.fillRect(
           box.min.x + x * block.width,
           box.min.y + y * block.height,
           block.width,
           block.height
         );
-        output[x + x_center][y + y_center] = 1;
       }
     }
   }
