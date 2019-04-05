@@ -36,6 +36,7 @@
     "workerize-loader": "^1.0.4"
   },
   "dependencies": {
+    "brain": "^1.0.0",
     "workerize": "^0.1.7"
   }
 }
