@@ -10,7 +10,7 @@ export function getBoxData({
   data: CanvasRenderingContext2D;
   box: BoundingBox;
 }) {
-  // Create an offscreen canvas
+  // Get imagedata with some extra margin for better reading
   return data.getImageData(
     box.min.x,
     box.min.y,
@@ -31,25 +31,25 @@ export default function normalize({
   box: BoundingBox;
 }): number[][] {
   // Why is this so awful? Because .fill() and TypeScript downlevel iteration is messed up
-  let output = [...new Array(20).fill(0)].map(() =>
-    [...new Array(20).fill(0)].map(() => 0)
+  let output = [...new Array(28).fill(0)].map(() =>
+    [...new Array(28).fill(0)].map(() => 0)
   );
 
   let boxData = getBoxData({ box, data });
-  const newSize = newDimensions(boxData, 20);
+  const newSize = newDimensions(boxData, 24);
 
   let block = {
-    width: Math.floor(boxData.width / newSize.width),
-    height: Math.floor(boxData.height / newSize.height)
+    width: Math.round(boxData.width / newSize.width),
+    height: Math.round(boxData.height / newSize.height)
   };
 
   // Center the array based on the new dimensions
-  let y_center = Math.floor((20 - newSize.height) / 2);
-  let x_center = Math.floor((20 - newSize.width) / 2);
+  let y_center = Math.floor((28 - newSize.height) / 2);
+  let x_center = Math.floor((28 - newSize.width) / 2);
 
   // Make boxes
-  for (let x = 0; x < newSize.width; x++) {
-    for (let y = 0; y < newSize.height; y++) {
+  for (let x = 0; x <= newSize.width; x++) {
+    for (let y = 0; y <= newSize.height; y++) {
       let importantCount = 0;
 
       // If the block this region represents has an important pixel, we'll want to fill it in
@@ -70,16 +70,23 @@ export default function normalize({
         }
       }
 
-      data.strokeStyle = "blue";
+      data.strokeStyle = "rgba(0, 0, 255, 0.3)";
+
+      data.strokeRect(
+        box.min.x + x * block.width,
+        box.min.y + y * block.height,
+        block.width,
+        block.height
+      );
 
       if (importantCount > 0.05 * block.width * block.height) {
         let antialias = sigmoid(
           importantCount / (block.width * block.height),
-          10,
+          5.8,
           0.1
         );
 
-        output[x + x_center][y + y_center] = antialias;
+        output[x + x_center][y + y_center] = antialias * 255;
 
         data.fillStyle = `rgba(0, 0, 255, ${antialias})`;
 
