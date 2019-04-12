@@ -7,56 +7,7 @@
       href="https://fonts.googleapis.com/css?family=Source Sans Pro"
       rel="stylesheet"
     />
-    <style>
-      body {
-        margin: 0 auto;
-        font-family: "Source Sans Pro", sans-serif;
-      }
-
-      main {
-        display: flex;
-      }
-
-      canvas {
-        border: 2px solid #2d3436;
-      }
-
-      canvas#input {
-        width: 400px;
-        height: 400px;
-        margin: 16px;
-      }
-
-      .buttons {
-        margin-left: 16px;
-        display: flex;
-      }
-
-      .buttons button {
-        background: none;
-        outline: none;
-        border: 2px solid #2d3436;
-        padding: 8px 16px;
-        text-transform: uppercase;
-        font-weight: bold;
-        cursor: auto;
-        margin-right: 16px;
-        cursor: pointer;
-      }
-
-      .buttons button:hover {
-        background-color: #2d3436;
-        color: white;
-      }
-
-      .buttons button.right {
-        margin-left: auto;
-      }
-
-      h1 {
-        text-align: center;
-      }
-    </style>
+    <link rel="stylesheet" href="main.css" />
   </head>
 
   <body>
@@ -78,7 +29,6 @@
         <div class="views">
           <div class="extract">
             <canvas id="focus" height="84px" width="84px"></canvas>
-            <canvas id="sample" height="84px" width="84px"></canvas>
           </div>
         </div>
       </article>
